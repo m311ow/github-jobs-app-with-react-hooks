@@ -11,7 +11,6 @@ const ACTIONS = {
 const BASE_URL =
   'https://cors-anywhere.herokuapp.com/https://jobs.github.com/positions.json'
 
-// this get called everytime we call dispatch
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.MAKE_REQUEST:
@@ -21,7 +20,7 @@ function reducer(state, action) {
     case ACTIONS.ERROR:
       return { ...state, loading: false, error: action.payload.error, jobs: [] }
     case ACTIONS.UPDATE_HAS_NEXT_PAGE:
-      return { ...state, hasNextpage: action.payload.hasNextpage }
+      return { ...state, hasNextPage: action.payload.hasNextPage }
     default:
       return state
   }
@@ -46,7 +45,6 @@ export default function useFetchJobs(params, page) {
         dispatch({ type: ACTIONS.ERROR, payload: { error: e } })
       })
 
-    // request to check if next page exists
     const cancelToken2 = axios.CancelToken.source()
     axios
       .get(BASE_URL, {
@@ -56,7 +54,7 @@ export default function useFetchJobs(params, page) {
       .then((res) => {
         dispatch({
           type: ACTIONS.UPDATE_HAS_NEXT_PAGE,
-          payload: { hasNextpage: res.data.length !== 0 },
+          payload: { hasNextPage: res.data.length !== 0 },
         })
       })
       .catch((e) => {
